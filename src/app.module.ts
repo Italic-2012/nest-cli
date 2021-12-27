@@ -2,6 +2,8 @@ import { resolve } from 'path';
 import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MailerModule } from '@nestjs-modules/mailer';
+import { ScheduleModule } from '@nestjs/schedule';
+import { BullModule } from '@nestjs/bull';
 import { ConfigModule, ConfigService } from 'nestjs-config';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
 import { HelloModule } from './modules/hello/hello.module';
@@ -10,6 +12,10 @@ import { RoleGuardModule } from './modules/roleGuard/roleGuard.module';
 import { EmailModule } from './modules/email/email.module';
 // import { HealthModule } from './modules/health/health.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { UsersModule } from './modules/users/users.module';
+import { AlbumModule } from './modules/album/album.module';
+import { SchedulesModule } from './schedules/schedules.module';
+// import { AudioModule } from './jobs/audio/audio.module';
 
 @Module({
   imports: [
@@ -22,12 +28,22 @@ import { AuthModule } from './modules/auth/auth.module';
       useFactory: (config: ConfigService) => config.get('email'),
       inject: [ConfigService],
     }),
+    // BullModule.registerQueueAsync({
+    //   name: 'audio',
+    //   useFactory: (config: ConfigService) => config.get('redis'),
+    //   inject: [ConfigService],
+    // }),
+    // AudioModule,
+    // ScheduleModule.forRoot(),
+    // SchedulesModule,
     HelloModule,
     AuthModule,
     ExceptionModule,
     RoleGuardModule,
     EmailModule,
     // HealthModule,
+    UsersModule,
+    AlbumModule,
   ],
 })
 export class AppModule {
